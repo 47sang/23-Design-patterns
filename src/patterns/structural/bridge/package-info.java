@@ -54,6 +54,17 @@
  *   <li>区分点：桥接的两个维度都很重要且可能同时变化；策略侧重"选一个来用"</li>
  * </ul>
  *
+ * <h2>业务场景</h2>
+ * <ul>
+ *   <li><strong>消息推送</strong>：消息类型（通知、告警、营销）× 推送渠道（短信、邮件、App 推送、站内信），每种消息可以走不同渠道，桥接让两个维度独立扩展</li>
+ *   <li><strong>跨平台 GUI</strong>：控件（按钮、文本框、列表）× 渲染引擎（Windows GDI、macOS Core Graphics、Web Canvas），同一控件在不同平台上渲染方式不同</li>
+ *   <li><strong>持久化框架</strong>：领域对象（用户、订单、商品）× 存储方式（MySQL、MongoDB、Redis、Elasticsearch），业务逻辑不关心数据存在哪里</li>
+ *   <li><strong>加密解密</strong>：数据流（文件、网络包、数据库字段）× 加密算法（AES、RSA、SM4），加密算法可以独立替换</li>
+ * </ul>
+ *
+ * <h2>识别桥接模式的方法</h2>
+ * <p>当你发现自己要写的类名是两个维度的笛卡尔积时（如 <code>MysqlUserDao</code>、<code>MongoUserDao</code>、<code>MysqlOrderDao</code>、<code>MongoOrderDao</code>），大概率应该用桥接模式。</p>
+ *
  * @see patterns.structural.bridge 桥接示例
  */
 package patterns.structural.bridge;

@@ -31,6 +31,26 @@
  * 不关心具体产品由哪个工厂创建。新增产品类型时，只需添加新的工厂子类，
  * 无需修改现有代码——符合<strong>开闭原则</strong>。</p>
  *
+ * <h2>业务场景</h2>
+ * <ul>
+ *   <li><strong>日志框架</strong>：不同日志实现（Log4j、SLF4J、JUL）对应不同的工厂子类，客户端通过抽象工厂接口获取日志记录器，切换实现不需要修改业务代码</li>
+ *   <li><strong>文档解析</strong>：根据文件类型创建对应的解析器（PDF 解析器、Word 解析器、Excel 解析器），新增格式只需新增工厂子类</li>
+ *   <li><strong>支付渠道</strong>：每种支付方式（支付宝、微信、银联）有独立的工厂，支付网关通过抽象工厂接口获取处理器，运行时根据渠道选择工厂</li>
+ *   <li><strong>数据库连接</strong>：不同数据库的连接工厂（MySQL、PostgreSQL、Oracle），JDBC 驱动管理器就是工厂方法的典型应用</li>
+ * </ul>
+ *
+ * <h2>与 Spring 的关系</h2>
+ * <p>Spring 的 <strong>BeanFactory</strong> 就是工厂方法模式的典型实现：
+ * 你定义 Bean 的接口或抽象类，Spring 容器在运行时根据配置决定创建哪个具体实现，
+ * 客户端代码只持有接口引用，完全解耦。</p>
+ *
+ * <h2>注意事项</h2>
+ * <ul>
+ *   <li>如果产品种类很少且基本不会增加，简单工厂（配合枚举映射）更简洁，不需要为了"符合开闭原则"而使用工厂方法</li>
+ *   <li>工厂方法会导致类的数量翻倍（每个产品多一个工厂类），在简单场景中可能显得过度设计</li>
+ *   <li>配合依赖注入框架（如 Spring）使用时，工厂的"子类决定"逻辑可以由框架的配置机制替代</li>
+ * </ul>
+ *
  * @see patterns.creational.factory.simple 简单工厂模式
  * @see patterns.creational.factory.abstract_factory 抽象工厂模式
  */

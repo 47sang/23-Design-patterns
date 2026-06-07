@@ -65,6 +65,37 @@
  *       又不想这些操作"污染"对象本身的类</li>
  * </ul>
  *
+ * <h2>业务场景</h2>
+ * <ul>
+ *   <li><strong>编译器</strong>：AST（抽象语法树）上的各种分析——类型检查、代码生成、优化、格式化，每种分析都是一个 Visitor，新增分析不需要改动 AST 节点类</li>
+ *   <li><strong>财务报表</strong>：同一组财务数据（收入、支出、资产、负债）需要输出不同报表（利润表、资产负债表、现金流量表），每个报表是一个 Visitor</li>
+ *   <li><strong>文档导出</strong>：文档元素（标题、段落、表格、图片）需要导出为不同格式（PDF、HTML、Markdown），每个导出器是一个 Visitor</li>
+ *   <li><strong>电商商品</strong>：商品元素（实物商品、虚拟商品、套餐）需要不同的计算逻辑（价格计算、税费计算、库存扣减），每个计算逻辑是一个 Visitor</li>
+ * </ul>
+ *
+ * <h2>现代 Java 改进</h2>
+ * <p>Java 16+ 引入的 <strong>密封类（sealed interface）</strong>可以让 Visitor 更加安全：</p>
+ * <pre>
+ * // 编译器确保所有 Element 子类型都被穷尽
+ * public sealed interface Element permits ConcreteA, ConcreteB, ConcreteC {}
+ *
+ * // Visitor 的 switch 表达式编译器会检查是否覆盖了所有子类型
+ * public String accept(Visitor v) {
+ *     return switch (this) {
+ *         case ConcreteA a -> v.visit(a);
+ *         case ConcreteB b -> v.visit(b);
+ *         case ConcreteC c -> v.visit(c);
+ *     };
+ * }
+ * </pre>
+ *
+ * <h2>注意事项</h2>
+ * <ul>
+ *   <li>Visitor 模式适合<strong>对象结构稳定、操作频繁变化</strong>的场景。如果元素类型经常变（每迭代就加新元素），Visitor 的代价就太大了——每次加元素都要修改所有 Visitor</li>
+ *   <li>对于只有 2-3 种元素类型的简单场景，用策略模式或简单的 if-else 更实际</li>
+ *   <li>Visitor 和迭代器经常配合使用：Visitor 遍历元素结构，迭代器提供遍历机制</li>
+ * </ul>
+ *
  * @see patterns.behavioral.visitor 访问者模式示例
  */
 package patterns.behavioral.visitor;
